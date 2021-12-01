@@ -32,4 +32,10 @@ $(document).ready(function () {
   };
 
   addButton.click(addItem);
+
+  itemInput.keyup(function (event) {
+    if (event.key === "Enter") {
+      addItem();
+    }
+  });
 });
