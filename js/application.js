@@ -5,6 +5,18 @@ $(document).ready(function () {
   var costInput = $('#cost-input');
   var quantityInput = $('#quantity-input');
   var addButton = $('#add-button');
+  var cartTotal = $('#cart-total');
+
+  var updateCartTotal = function () {
+    var itemTotals = $('.item-total');
+    var runningTotal = 0;
+
+    itemTotals.each(function (i, ele) {
+      runningTotal += Number($(ele).text());
+    });
+
+    cartTotal.html(runningTotal.toFixed(2));
+  };
 
   var addItem = function () {
     var itemCol = $('<div></div>');
@@ -14,10 +26,11 @@ $(document).ready(function () {
     itemRow.attr('class', 'row')
 
     var removeButton = $('<button>Remove</button>');
-    removeButton.attr('class', 'btn btn-danger remove-button');
+    removeButton.attr('class', 'btn btn-danger remove-button col-xs-2');
     removeButton.click(function () {
       var target = $(this).parent().parent();
       target.remove();
+      updateCartTotal();
     });
 
     var h5 = $('<h5></h5>');
@@ -26,6 +39,7 @@ $(document).ready(function () {
     var itemName = h5.clone();
     var itemCost = h5.clone();
     var itemTotal = h5.clone();
+    itemTotal.addClass('item-total');
 
     var quantity = $('<input>');
     quantity.attr('class', 'col-xs-1 quantity-field');
@@ -33,10 +47,10 @@ $(document).ready(function () {
     var itemQuantity = quantity.clone();
 
     itemName.text(itemInput.val());
-    itemCost.text(costInput.val());
+    itemCost.text(Number(costInput.val()).toFixed(2));
     itemQuantity.val(quantityInput.val());
 
-    var total = costInput.val() * quantityInput.val();
+    var total = (costInput.val() * quantityInput.val()).toFixed(2);
     itemTotal.text(total);
 
     itemRow.append(itemName);
@@ -52,6 +66,8 @@ $(document).ready(function () {
     itemInput.val('');
     costInput.val('');
     quantityInput.val('');
+
+    updateCartTotal();
   };
 
   addButton.click(addItem);
@@ -63,6 +79,8 @@ $(document).ready(function () {
   });
 
   $(document).on('keyup', '.quantity-field', function () {
-    $(this).next().text($(this).val() * $(this).prev().text());
+    var newTotal = $(this).val() * $(this).prev().text();
+    $(this).next().text(newTotal.toFixed(2));
+    updateCartTotal();
   });
 });
