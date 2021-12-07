@@ -12,10 +12,11 @@ $(document).ready(function () {
     var runningTotal = 0;
 
     itemTotals.each(function (i, ele) {
-      runningTotal += Number($(ele).text());
+      runningTotal += Number($(ele).text().replace('$', ''));
     });
 
-    cartTotal.html(runningTotal.toFixed(2));
+    runningTotal = String(runningTotal.toFixed(2));
+    cartTotal.html("$" + runningTotal);
   };
 
   var addItem = function () {
@@ -37,7 +38,9 @@ $(document).ready(function () {
     h5.attr('class', 'col-xs-3');
 
     var itemName = h5.clone();
+    itemName.addClass('item-name');
     var itemCost = h5.clone();
+    itemCost.addClass('item-cost');
     var itemTotal = h5.clone();
     itemTotal.addClass('item-total');
 
@@ -47,11 +50,12 @@ $(document).ready(function () {
     var itemQuantity = quantity.clone();
 
     itemName.text(itemInput.val());
-    itemCost.text(Number(costInput.val()).toFixed(2));
+    var cost = Number(costInput.val()).toFixed(2);
+    itemCost.text("$" + cost);
     itemQuantity.val(quantityInput.val());
 
     var total = (costInput.val() * quantityInput.val()).toFixed(2);
-    itemTotal.text(total);
+    itemTotal.text("$" + total);
 
     itemRow.append(itemName);
     itemRow.append(itemCost);
@@ -79,8 +83,8 @@ $(document).ready(function () {
   });
 
   $(document).on('keyup', '.quantity-field', function () {
-    var newTotal = $(this).val() * $(this).prev().text();
-    $(this).next().text(newTotal.toFixed(2));
+    var newTotal = $(this).val() * $(this).prev().text().replace('$', '');
+    $(this).next().text("$" + newTotal.toFixed(2));
     updateCartTotal();
   });
 });

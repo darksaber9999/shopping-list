@@ -1,0 +1,17 @@
+input {
+  width: max-content;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+input:not(#item-input) {
+  text-align: center;
+}
+
+.item-total, .total-section, .item-cost {
+  text-align: center;
+}
+
+.total-section {
+  border-top: 2px solid black;
+}
